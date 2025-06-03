@@ -1,4 +1,4 @@
-How to use AI in index.css to automate the code production:
+1. How to use AI in index.css to automate the code production:
   - make some example of code
   - copy the relevant section from figma
   - mark the code that has just been written
@@ -9,3 +9,10 @@ How to use AI in index.css to automate the code production:
   - click "edit" button
   - wait while AI process it.
   - click "accept" if AI correctly intrepreted 
+
+2. How to copy paste image from Figma:
+  - left click the item in Figma
+  - copy as svg
+  - Go to vscode: create file svgr in assets folder
+  - paste the data
+  - change file name from svgr into svg

@@ -2,6 +2,7 @@
 @import "tw-animate-css";
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
+@config "../tailwind.config.ts";
 @custom-variant dark (&:is(.dark *));
 
 
@@ -114,9 +115,6 @@
   --radius-full: 9999px;    /* ∞ */
 }
 
-
-
-
 /* Start shadcn */
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
@@ -224,13 +222,41 @@
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
 }
+/* End shadcn */
 
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
+body {
+  @apply bg-white text-neutral-900 text-sm font-normal;
+  font-family: "Inter", sans-serif;
+}
+
+@layer components {
+  .custom-container {
+    @apply max-w-360 px-30
   }
 }
-/* End shadcn */
+
+@layer utilities {
+  .flex-start {
+    @apply flex items-start justify-start;
+  }
+
+  .flex-center {
+    @apply flex items-center justify-center;
+  }
+
+  .flex-center-column {
+    @apply flex items-center justify-center flex-col;
+  }
+
+  .flex-between {
+    @apply flex items-center justify-between;
+  }
+}
+
+img {
+  user-drag: none;
+  -webkit-user-drag: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+}
