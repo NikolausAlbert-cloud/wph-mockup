@@ -1,0 +1,11 @@
+How to use AI in index.css to automate the code production:
+  - make some example of code
+  - copy the relevant section from figma
+  - mark the code that has just been written
+  - press and hold "Str", click "i", click "h", click "i"
+  - click the speaker icon
+  - order AI such "Please add the following data"
+  - paste the copied data from figma into chat box of the AI
+  - click "edit" button
+  - wait while AI process it.
+  - click "accept" if AI correctly intrepreted 
