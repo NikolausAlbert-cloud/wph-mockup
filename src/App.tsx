@@ -5,11 +5,10 @@ import { SignInForm_page } from './pages/SignInForm_page';
 
 const App = () => {
   return (
-    // <p> HEllo </p>
     <Router>
       <Routes>
-        <Route path="/signup" element={<SignUpForm_page />} />
-        <Route path="/signin" element={<SignInForm_page />} />
+        <Route path="/auth/register" element={<SignUpForm_page />} />
+        <Route path="/auth/login" element={<SignInForm_page />} />
         {/* <Route path="*" element={<NotFound />} /> */}
         {/* Add more routes as needed */}
       </Routes>

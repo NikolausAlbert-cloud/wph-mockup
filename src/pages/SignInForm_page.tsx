@@ -8,7 +8,7 @@ export const SignInForm_page = () => {
         <h2 className="text-xl font-bold text-neutral-900 mb-5">Sign In</h2>
         <SignInForm />
         <p className="text-sm font-regular text-neutral-950 text-center mt-4">
-          Don&apos;t have an account?{" "}<Link to="/signup" className="text-sm font-bold text-primary-300">Register</Link>
+          Don&apos;t have an account?{" "}<Link to="/auth/register" className="text-sm font-bold text-primary-300">Register</Link>
         </p>
       </div>
     </div>

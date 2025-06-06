@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormInput } from './FormInput';
 import { signUpForm_data } from '@/constants/signUpForm_data';
-import { SignUpFormData, signUpSchema } from '@/utils/validation';
+import { SignUpFormData, UserSchema } from '@/utils/validation';
 
 export const SignUpForm = () => {
   const {
@@ -11,7 +11,7 @@ export const SignUpForm = () => {
     handleSubmit, 
     formState: { errors }
   } = useForm<SignUpFormData>({
-    resolver: zodResolver(signUpSchema),
+    resolver: zodResolver(UserSchema),
     defaultValues: {
       name: '',
       email: '',

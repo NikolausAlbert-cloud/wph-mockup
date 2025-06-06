@@ -1,11 +1,11 @@
 import { z } from "zod";
 
-export const signUpSchema = z.object({
+export const UserSchema = z.object({
+  id: z.number(),
   name: z.string().min(2, { message: "Name is required" }),
   email: z.string().email(),
   password: z.string().min(8, { message: "Password must be at least 8 characters long" }),
   confirmpassword: z.string(),
-  firstname: z.string().min(8, { message: "xxxx" }),
 }).superRefine(({ password, confirmpassword }, ctx) => {
     if (password !== confirmpassword) {
       ctx.addIssue({
@@ -16,10 +16,7 @@ export const signUpSchema = z.object({
     }
   });
 
-export const signInSchema = z.object({
-  email: z.string().email(),
-  password: z.string().nonempty({message: "Password is required"})
-});
- 
-export type SignUpFormData = z.infer<typeof signUpSchema>;
-export type SignInFormData = z.infer<typeof signInSchema>;
+export type User = z.infer<typeof UserSchema>;
+export type SignUpFormData = Omit<User, "id">;
+export type SignUpUser = Omit<User, "name" | "password" | "confirmpassword">;
+export type SignInFormData = Omit<User, "id" | "name" | "confirmpassword">;
