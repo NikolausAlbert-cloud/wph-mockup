@@ -1,22 +1,25 @@
 
 import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { FormInput } from './FormInput';
 import { signUpForm_data } from '@/constants/signUpForm_data';
-
-type SignUpFormProps = {
-  name: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-}
+import { SignUpFormData, signUpSchema } from '@/utils/validation';
 
 export const SignUpForm = () => {
   const {
     register, 
     handleSubmit, 
     formState: { errors }
-  } = useForm<SignUpFormProps>();
-  const onSubmit = (data: SignUpFormProps) => {
+  } = useForm<SignUpFormData>({
+    resolver: zodResolver(signUpSchema),
+    defaultValues: {
+      name: '',
+      email: '',
+      password: '',
+      confirmPassword: ''
+    }
+  });
+  const onSubmit = (data: SignUpFormData) => {
     console.log(data);
   };
 
@@ -25,7 +28,7 @@ export const SignUpForm = () => {
     {signUpForm_data.map((data, i) => (
       <FormInput key={i} label={data.label} error={errors[data.label.toLowerCase()]?.message}>
         <input 
-        {...register(data.label.toLowerCase(), {required: {value:true, message:`${data.label} is required`}})} 
+        {...register(data.label.toLowerCase())} 
         placeholder={data.placeholder} 
         type={data.type}
         className={`w-full py-2.5 px-4 border ${errors[data.label.toLowerCase()]?"border-red-500":"border-neutral-300"} rounded-xl text-neutral-950 text-sm font-weight-regular focus:outline-none focus:ring-2 focus:ring-blue-500`} />
