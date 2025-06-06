@@ -15,6 +15,17 @@ export default defineConfig({
   ],
   server: {
     port: 3000,
+    // auto refresh
+    watch: {
+      usePolling: true,
+      interval: 100,
+    },
+    hmr: {
+      protocol: 'ws',
+      host: 'localhost',
+      port: 3000,
+    },
+    // end auto refresh
   },
   resolve: {
     alias: {
