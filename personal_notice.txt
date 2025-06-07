@@ -16,3 +16,11 @@
   - Go to vscode: create file svgr in assets folder
   - paste the data
   - change file name from svgr into svg
+
+
+
+Steps finishing this project:
+1. class 19: intial setting (eslint, prettier, shadcn, tailwind)
+2. class 16 maret: UI auth, compound component, react hook from
+3. class 33: front end zod validation
+4. class 34: auth, cookie storage
