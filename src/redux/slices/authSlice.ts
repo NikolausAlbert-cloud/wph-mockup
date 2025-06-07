@@ -1,20 +1,21 @@
-import { User_AuthSlice } from "@/utils/validation";
+import { SignUpUser } from "@/utils/validation";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type AuthState = {
   uid: string | null;
   email: string | null;
   token: string | null;
-  user: User_AuthSlice | null;
+  user: SignUpUser | null;
 }
 
-const getUserFromLocalStorage = (): User_AuthSlice | null => {
+const getUserFromLocalStorage = (): SignUpUser | null => {
   const user = localStorage.getItem("user");
   return user ? JSON.parse(user) : null;
 }
 
 const getTokenFromLocalStorage = (): string | null => {
   const token = localStorage.getItem("token");
-  return token ? token : null;
+  return token ? JSON.parse(token) : null;
 }
 
 const initialState: AuthState = {
@@ -24,7 +25,7 @@ const initialState: AuthState = {
   user: getUserFromLocalStorage(),
 }
 
-const authSlice = ({
+const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
@@ -35,7 +36,7 @@ const authSlice = ({
       state.token = action.payload.token;
       localStorage.setItem("token", JSON.stringify(action.payload.token));
     },
-    setUser: (state, action: PayloadAction<{ user: User_AuthSlice}>) => {
+    setUser: (state, action: PayloadAction<{ user: SignUpUser}>) => {
       console.log("User received in Redux: ", action.payload.user);
       state.user = action.payload.user;
       localStorage.setItem("user", JSON.stringify(action.payload.user));

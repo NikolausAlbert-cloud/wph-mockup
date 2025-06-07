@@ -1,6 +1,6 @@
-import { customAxios } from "./auth"
+import { customAxios } from "./customAxios"
 
-export postLogout = async () => {
+export const postLogout = async () => {
   const response = await customAxios.post("/auth/logout");
   return response.data;
 }

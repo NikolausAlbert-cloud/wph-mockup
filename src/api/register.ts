@@ -1,6 +1,6 @@
 import { SignUpFormData, SignUpUser } from "@/utils/validation"
 import { MutationFunction } from "@tanstack/react-query";
-import { customAxios } from "./auth";
+import { customAxios } from "./customAxios";
 
 type RegisterParams = {
   payload: SignUpFormData;
