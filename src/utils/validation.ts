@@ -18,5 +18,5 @@ export const UserSchema = z.object({
 
 export type User = z.infer<typeof UserSchema>;
 export type SignUpFormData = Omit<User, "id">;
-export type SignUpUser = Omit<User, "password" | "confirmpassword">;
+export type UserStorage = Omit<User, "password" | "confirmpassword">;
 export type SignInFormData = Omit<User, "id" | "name" | "confirmpassword">;

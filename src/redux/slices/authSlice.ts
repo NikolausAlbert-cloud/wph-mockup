@@ -1,14 +1,14 @@
-import { SignUpUser } from "@/utils/validation";
+import { UserStorage } from "@/utils/validation";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type AuthState = {
   uid: string | null;
   email: string | null;
   token: string | null;
-  user: SignUpUser | null;
+  user: UserStorage | null;
 }
 
-const getUserFromLocalStorage = (): SignUpUser | null => {
+const getUserFromLocalStorage = (): UserStorage | null => {
   const user = localStorage.getItem("user");
   return user ? JSON.parse(user) : null;
 }
@@ -29,14 +29,14 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    login: (state, action: PayloadAction<{ uid: string; email: string; token: string}>) => {
+    loginOauth: (state, action: PayloadAction<{ uid: string; email: string; token: string}>) => {
       console.log("Token received in Redux: ", action.payload.token);
       state.uid = action.payload.uid;
       state.email = action.payload.email;
       state.token = action.payload.token;
       localStorage.setItem("token", JSON.stringify(action.payload.token));
     },
-    setUser: (state, action: PayloadAction<{ user: SignUpUser}>) => {
+    setUser: (state, action: PayloadAction<{ user: UserStorage}>) => {
       console.log("User received in Redux: ", action.payload.user);
       state.user = action.payload.user;
       localStorage.setItem("user", JSON.stringify(action.payload.user));
@@ -52,5 +52,5 @@ const authSlice = createSlice({
   }
 });
 
-export const { login, setUser, logout} = authSlice.actions;
+export const { loginOauth, setUser, logout} = authSlice.actions;
 export default authSlice.reducer;
