@@ -67,8 +67,8 @@ export const SignUpForm = () => {
 
       <button type="submit" className="w-full bg-primary-300 text-sm font-semibold text-neutral-25 py-2.5 rounded-full hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
         {loading ? "Signing up..." : "Sign Up"}
-        {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
       </button>
+      {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
     </form>
   )
 }
