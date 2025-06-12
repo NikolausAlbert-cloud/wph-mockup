@@ -1,7 +1,8 @@
-import { login, logout } from '@/redux/slices/authSlice';
+import { loginOauth, logout } from '@/redux/slices/authSlice';
 import { auth } from '@/utils/firebaseConfig';
 import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
-import React, { useState } from 'react'
+import { useState } from 'react'
+import { useDispatch } from 'react-redux';
 
 export const useAuth = () => {
   const [loading, setLoading] = useState(false);
@@ -18,7 +19,7 @@ export const useAuth = () => {
       const userEmail = user.email ?? "";
       localStorage.setItem("token", token);
 
-      dispatch(login({ uid: user.uid, email: userEmail, token}))
+      dispatch(loginOauth({ id: user.uid, email: userEmail, token}))
     } catch (error) {
       console.error("Login failed", error);
     } finally {

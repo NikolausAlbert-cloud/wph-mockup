@@ -1,10 +1,10 @@
 
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormInput } from './FormInput';
 import { signUpForm_data } from '@/constants/signUpForm_data';
-import { SignUpFormData, UserSchema } from '@/utils/validation';
-import React, { useState } from 'react';
+import { SignUpFormData, SignUpSchema } from '@/utils/validation';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { postRegister } from '@/api/register';
@@ -16,17 +16,13 @@ export const SignUpForm = () => {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmpassword, setConfirmpassword] = useState("");
 
   const {
     register, 
     handleSubmit, 
     formState: { errors }
   } = useForm<SignUpFormData>({
-    resolver: zodResolver(UserSchema),
+    resolver: zodResolver(SignUpSchema),
     defaultValues: {
       name: '',
       email: '',
@@ -34,23 +30,22 @@ export const SignUpForm = () => {
       confirmpassword: ''
     }
   });
-  const onSubmit = async(e: React.FormEvent) => {
-    e.preventDefault();
+  const onSubmit: SubmitHandler<SignUpFormData> = async (data) => {
     setLoading(true);
     setError(null);
-    
+    console.log("Form data:", data);
     try {
       const response = await postRegister({
-        payload: { name, email, password, confirmpassword }
+        payload: data 
       });
 
       dispatch(setUser(response));
-      localStorage.setItem("user", JSON.stringify(response.user));
+      localStorage.setItem("user", JSON.stringify(response));
       navigate("/");
     
     } catch (err) {
       console.error("Registration error:", err);
-      setError("Registration failed. Please try again.");
+      setError("Error: An error occurred during registration. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -58,17 +53,17 @@ export const SignUpForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-    {signUpForm_data.map((data, i) => (
-      <FormInput key={i} label={data.label} error={errors[data.label.toLowerCase()]?.message}>
+    {signUpForm_data.map((data, i) => {
+       const fieldName = data.label.toLowerCase() as keyof SignUpFormData;
+       return (
+      <FormInput key={i} label={data.label} error={errors[fieldName]?.message}>
         <input 
-        {...register(data.label.toLowerCase())} 
-        value={data.label.toLowerCase()}
-        onChange={e => `set${data.label.charAt(0).toUpperCase() + data.label.slice(1)}`(e.target.value)}
+        {...register(fieldName)} 
         placeholder={data.placeholder} 
         type={data.type}
-        className={`w-full py-2.5 px-4 border ${errors[data.label.toLowerCase()]?"border-red-500":"border-neutral-300"} rounded-xl text-neutral-950 text-sm font-weight-regular focus:outline-none focus:ring-2 focus:ring-blue-500`} />
+        className={`w-full py-2.5 px-4 border ${errors[fieldName]?"border-red-500":"border-neutral-300"} rounded-xl text-neutral-950 text-sm font-weight-regular focus:outline-none focus:ring-2 focus:ring-blue-500`} />
       </FormInput>
-    ))}
+    )})}
 
       <button type="submit" className="w-full bg-primary-300 text-sm font-semibold text-neutral-25 py-2.5 rounded-full hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
         {loading ? "Signing up..." : "Sign Up"}

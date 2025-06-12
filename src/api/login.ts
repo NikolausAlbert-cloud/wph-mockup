@@ -1,17 +1,13 @@
-import { User } from "@/utils/validation";
+import { SignInFormData } from "@/utils/validation";
 import { customAxios } from "./customAxios";
 import { MutationFunction } from "@tanstack/react-query";
 
 type LoginParams = {
-  payload: {
-    email: string;
-    password: string;
-  }
+  payload: SignInFormData;
 }
 
 type LoginResponse = {
-  message: string;
-  user: User;
+  token: string;
 }
 
 export const postLogin: MutationFunction<LoginResponse, LoginParams> = async ({ payload }) => {

@@ -1,3 +1,6 @@
+# added
+.env
+
 # Logs
 logs
 *.log
