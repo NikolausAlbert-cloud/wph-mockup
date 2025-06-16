@@ -46,3 +46,4 @@ export type SignUpFormData = z.infer<typeof SignUpSchema>;
 export type SignUpFormResponse = Omit<User, "name" | "password" | "confirmpassword">;
 export type UserStorage = Omit<User, "password" | "confirmpassword">;
 export type SignInFormData = z.infer<typeof SignInSchema>;
+export type GetUserDataType = Omit<User, "confirmpassword">;

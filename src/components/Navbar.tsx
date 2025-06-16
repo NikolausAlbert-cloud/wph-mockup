@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { Button } from "./ui/button"
 import Logo from "../assets/images/logo.svg"
 import { Search, Menu, PencilLine, User, LogOut } from "lucide-react"
@@ -12,17 +12,27 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import useWindowDimensions from "@/hooks/useWindowsDImensions"
+import { logout } from "@/redux/slices/authSlice"
+import { useDispatch, useSelector } from "react-redux"
+import { RootState } from "@/redux/store"
+import { useTitleCase } from "@/hooks/useTitleCase"
 
 export const Navbar = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [ isToken, setIsToken ] = useState(false);
+  // const [ username, setUsername ] = useState(null);
   const { width } = useWindowDimensions();
+
+  const data = useSelector((state:RootState) => state.user).name;
+  const name = useTitleCase(data);
 
 // Define different sideOffset values based on screen width
 const getSideOffset = () => {
   if (width < 640) { // Example: less than 'sm' breakpoint
     return 5; // Smaller offset for small screens
   } else if (width >= 640 && width < 1024) { // Example: 'sm' to 'lg'
-    return 10;
+    return 8;
   } else { // Example: 'lg' and up
     return 15; // Larger offset for larger screens
   }
@@ -36,6 +46,18 @@ const getSideOffset = () => {
       setIsToken(false);
     }  
   }, []);
+
+  // useEffect(() => {
+    
+  //   if (data) {
+  //     setUsername(data.name);
+  //   }
+  // }, [username])
+
+  const handleClick_logout = () => {
+    dispatch(logout());
+    navigate("/auth/login");
+  };
 
   return (
     <header className="fixed z-50 top-0 w-full border-b border-neutral-300 border-0.25">
@@ -65,8 +87,8 @@ const getSideOffset = () => {
               </Link>
               <DropdownMenu>
                 <DropdownMenuTrigger  className="flex-between gap-3 cursor-pointer">
-                  <UserPhoto className="size-10 rounded-full"/>
-                  <p className="hidden lg:block text-sm font-medium text-neutral-900">Username</p>
+                  {/* <UserPhoto className="size-10 rounded-full"/> */}
+                  <p className="hidden lg:block text-sm font-medium text-neutral-900">{ name }</p>
                 </DropdownMenuTrigger >
                 <DropdownMenuContent sideOffset={getSideOffset()}>
                   <DropdownMenuItem>
@@ -75,7 +97,7 @@ const getSideOffset = () => {
                   </DropdownMenuItem>
                   <DropdownMenuItem>
                     <LogOut className="size-[15px] text-neutral-950"/>
-                    <span className="">Logout</span>
+                    <span onClick={handleClick_logout}>Logout</span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>

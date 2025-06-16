@@ -3,15 +3,18 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { FormInput } from './FormInput';
 import { signInForm_data } from '@/constants/signInForm_data';
 import { SignInFormData, SignInSchema } from '@/utils/validation';
-import { useNavigate } from 'react-router-dom';
+import { data, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { postLogin } from '@/api/login';
+import { setUser } from '@/redux/slices/getUserDataSlice';
+import { getUserData } from '@/api/getUserData';
+import { useDispatch } from 'react-redux';
 
 export const SignInForm = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
 
   const {
     register, 
@@ -35,6 +38,11 @@ export const SignInForm = () => {
       });
 
       localStorage.setItem("token", JSON.stringify(response.token));
+      
+      const response_getUserData = await getUserData({email:data.email});
+      console.log("response_getUserData: ", response_getUserData);
+      dispatch(setUser(response_getUserData));
+
       navigate("/");
 
     } catch (err) {

@@ -2,8 +2,8 @@ import { SignUpFormResponse, UserStorage } from "@/utils/validation";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type AuthState = {
-  id: string | null;
-  email: string | null;
+  // id: string | null;
+  // email: string | null;
   token: string | null;
   user: UserStorage | null;
 }
@@ -19,8 +19,8 @@ const getTokenFromLocalStorage = (): string | null => {
 }
 
 const initialState: AuthState = {
-  id: null,
-  email: null,
+  // id: null,
+  // email: null,
   token: getTokenFromLocalStorage(),
   user: getUserFromLocalStorage(),
 }
@@ -36,21 +36,21 @@ const authSlice = createSlice({
       state.token = action.payload.token;
       localStorage.setItem("token", JSON.stringify(action.payload.token));
     },
-    setUser: (state, action: PayloadAction<SignUpFormResponse>) => {
-      console.log("User received in Redux: ", action.payload);
-      state.id = action.payload.id;
-      state.email = action.payload.email;
-    },
-    logout: (state) => {
-      state.id = null;
-      state.email = null;
-      state.token = null;
-      state.user = null;
+    // setUser: (state, action: PayloadAction<SignUpFormResponse>) => {
+    //   console.log("User received in Redux: ", action.payload);
+    //   state.id = action.payload.id;
+    //   state.email = action.payload.email;
+    // },
+    logout: () => {
+      // state.id = null;
+      // state.email = null;
+      // state.token = null;
+      // state.user = null;
       localStorage.removeItem("token");
       localStorage.removeItem("user");
     }
   }
 });
 
-export const { loginOauth, setUser, logout} = authSlice.actions;
+export const { loginOauth, logout} = authSlice.actions;
 export default authSlice.reducer;

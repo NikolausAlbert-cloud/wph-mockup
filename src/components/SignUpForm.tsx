@@ -39,7 +39,7 @@ export const SignUpForm = () => {
         payload: data 
       });
 
-      dispatch(setUser(response));
+      // dispatch(setUser(response));
       localStorage.setItem("user", JSON.stringify(response));
       navigate("/");
     
