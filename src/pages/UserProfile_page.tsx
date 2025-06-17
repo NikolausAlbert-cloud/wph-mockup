@@ -53,28 +53,32 @@ export const UserProfile_page = () => {
   }, [dataUser]);
 
   return (
-    <div className="custom-contentContainer mt-32 flex-center">
-      <div className=" w-200 px-6 py-4 flex-between border border-neutral-300 rounded-2xl">
+    <div className="px-6 md:custom-contentContainer mt-32 flex-center">
+      <div className="h-19 md:h-28 w-200 px-4 md:px-6 py:-3.5 md:py-4 flex-between border border-neutral-300 rounded-2xl">
         <div className="flex-between gap-3">
           <div>
-            <UserPhoto className="size-20"/>
+            <UserPhoto className="size:12.5 md:size-20"/>
           </div>
           <div>
-            <p className="text-lg font-bold text-neutral-900">{ name }</p>
-            <p className="text-md font-regular text-neutral-900">{ job }</p>
+            <p className="text-sm md:text-lg font-bold text-neutral-900">{ name }</p>
+            <p className="text-sm md:text-md font-regular text-neutral-900">{ job }</p>
           </div>
         </div>
         <div>
           <Dialog open={isOpenDialog} onOpenChange={setIsOpenDialog}>
-            <form className="p-6">
+            <form >
               <DialogTrigger asChild>
-                <p className="text-sm font-semibold text-primary-300 underline underline-offset-3 cursor-pointer">
+                <p className="text-xs md:text-sm font-semibold text-primary-300 underline underline-offset-3 cursor-pointer">
                   Edit Profile
                 </p>
               </DialogTrigger>
               <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                  <DialogTitle className="text-xl-bold text-neutral-950">Edit Profile</DialogTitle>
+                  <div className="flex-start">
+                    <DialogTitle className="text-md font-bold md:text-xl-bold text-neutral-950">
+                      Edit Profile
+                    </DialogTitle>
+                  </div>
                   <div className="relative flex-center cursor-pointer">
                     <UserPhoto className="size-20" />
                     <Camera className="absolute left-1/2 translate-x-[58%] top-1/2 translate-y-[87.5%] size-6" />
@@ -84,14 +88,14 @@ export const UserProfile_page = () => {
                   {UserProfileDialog_data.map((item, i) => {
                     return (
                       <div className="grid gap-3" key={i}>
-                        <Label htmlFor={item.subtitle} className="text-sm-semibold text-neutral-950">{item.title}</Label>
-                        <Input id={item.subtitle} name={item.subtitle} defaultValue={i === 0 ? name : job } className="text-sm-regular text-neutral-950"/>
+                        <Label htmlFor={item.subtitle} className="text-sm font-semibold text-neutral-950">{item.title}</Label>
+                        <Input id={item.subtitle} name={item.subtitle} defaultValue={i === 0 ? name : job } className="text-sm font-regular text-neutral-950"/>
                       </div>
                     )
                   })}
                 </div>
                 <DialogFooter>
-                  <Button className="text-sm-semibold text-neutral-25 w-full">Update</Button>
+                  <Button className="text-sm font-semibold text-neutral-25 w-full h-10 md:h-11">Update</Button>
                 </DialogFooter>
               </DialogContent>
             </form>
