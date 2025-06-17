@@ -21,7 +21,6 @@ export const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [ isToken, setIsToken ] = useState(false);
-  // const [ username, setUsername ] = useState(null);
   const { width } = useWindowDimensions();
 
   const data = useSelector((state:RootState) => state.user).name;
@@ -46,13 +45,6 @@ const getSideOffset = () => {
       setIsToken(false);
     }  
   }, []);
-
-  // useEffect(() => {
-    
-  //   if (data) {
-  //     setUsername(data.name);
-  //   }
-  // }, [username])
 
   const handleClick_logout = () => {
     dispatch(logout());
@@ -87,13 +79,15 @@ const getSideOffset = () => {
               </Link>
               <DropdownMenu>
                 <DropdownMenuTrigger  className="flex-between gap-3 cursor-pointer">
-                  {/* <UserPhoto className="size-10 rounded-full"/> */}
+                  <UserPhoto className="size-10 rounded-full"/>
                   <p className="hidden lg:block text-sm font-medium text-neutral-900">{ name }</p>
                 </DropdownMenuTrigger >
                 <DropdownMenuContent sideOffset={getSideOffset()}>
-                  <DropdownMenuItem>
-                    <User className="size-[15px] text-neutral-950"/>
-                    <span className="">Profile</span>
+                  <DropdownMenuItem asChild>
+                    <Link to="/userProfile">
+                      <User className="size-[15px] text-neutral-950"/>
+                      Profile
+                    </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
                     <LogOut className="size-[15px] text-neutral-950"/>

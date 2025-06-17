@@ -234,6 +234,11 @@ body {
     @apply max-w-360 px-30;
     margin: 0 auto;
   }
+
+  .custom-contentContainer {
+    @apply max-w-360 px-80;
+    margin: 0 auto;
+  }
 }
 
 @layer utilities {

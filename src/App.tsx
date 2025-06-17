@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import { store } from './redux/store';
 import { Home } from './pages/Home';
 import { Navbar } from './components/Navbar';
+import { UserProfile_page } from './pages/UserProfile_page';
 
 const App = () => {
   return (
@@ -28,6 +29,7 @@ const AppContent = () => {
       <Routes>
         <Route path="/auth/register" element={<SignUpForm_page />} />
         <Route path="/auth/login" element={<SignInForm_page />} />
+        <Route path="/userProfile" element={<UserProfile_page />} />
         <Route path="/" element={<Home />} />
         {/* <Route path="*" element={<NotFound />} /> */}
         {/* Add more routes as needed */}
