@@ -7,7 +7,6 @@ import { RootState } from '@/redux/store';
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogFooter,
   DialogHeader,
@@ -17,11 +16,14 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { UserProfileDialog_data } from '@/constants/userProfileDialog_data';
+import { userProfileTab_data } from '@/constants/userProfileTab_data';
+import { UserProfilePost } from '@/components/userProfile.tsx/UserProfilePost';
 
 export const UserProfile_page = () => {
   const [ name, setName ] = useState("");
   const [ job, setJob ] = useState("");
   const [ isOpenDialog, setIsOpenDialog ] = useState(false);
+  const [ activeTab, setActiveTab ] = useState("tab-0");
   const dataUser = useSelector((state:RootState) => state.user);
   console.log("userProfile: ", dataUser)
 
@@ -53,8 +55,8 @@ export const UserProfile_page = () => {
   }, [dataUser]);
 
   return (
-    <div className="px-6 md:custom-contentContainer mt-32 flex-center">
-      <div className="h-19 md:h-28 w-200 px-4 md:px-6 py:-3.5 md:py-4 flex-between border border-neutral-300 rounded-2xl">
+    <div className="px-6 md:custom-contentContainer mt-32 flex-center flex-col gap-5">
+      <div className="h-19 md:h-28 w-200 px-4 md:px-6 py-3.5 md:py-4 flex-between border border-neutral-300 rounded-2xl">
         <div className="flex-between gap-3">
           <div>
             <UserPhoto className="size:12.5 md:size-20"/>
@@ -102,6 +104,20 @@ export const UserProfile_page = () => {
           </Dialog>
         </div>
       </div>
+      {/* Tabs */}
+      <div className="flex-start w-200">
+      {userProfileTab_data.map((item, i) => {
+        return (
+          <div 
+          key={i} 
+          onClick={() => setActiveTab(`tab-${i}`)}
+          className={`flex-center flex-row h-11 w-39 cursor-pointer text-sm font-regular border-b ${activeTab === `tab-${i}` ? "text-primary-300 font-semibold border-primary-300 border-b-3" : " text-neutral-950 border-neutral-300"}`}>
+            <p>{ item.title }</p>
+          </div>
+        )
+      })}
+      </div>
+      <UserProfilePost />
     </div>
   )
 }
