@@ -18,6 +18,7 @@ import { Label } from "@/components/ui/label"
 import { UserProfileDialog_data } from '@/constants/userProfileDialog_data';
 import { userProfileTab_data } from '@/constants/userProfileTab_data';
 import { UserProfilePost } from '@/components/userProfile.tsx/UserProfilePost';
+import { UserProfilePost_empty } from '@/components/userProfile.tsx/UserProfilePost_empty';
 
 export const UserProfile_page = () => {
   const [ name, setName ] = useState("");
@@ -55,8 +56,8 @@ export const UserProfile_page = () => {
   }, [dataUser]);
 
   return (
-    <div className="px-6 md:custom-contentContainer mt-32 flex-center flex-col gap-5">
-      <div className="h-19 md:h-28 w-200 px-4 md:px-6 py-3.5 md:py-4 flex-between border border-neutral-300 rounded-2xl">
+    <div className="mt-20 md:mt-32 flex-center flex-col gap-4 md:gap-5">
+      <div className="clamped-container h-19 md:h-28 px-4 md:px-6 py-3.5 md:py-4 flex-between border border-neutral-300 rounded-2xl">
         <div className="flex-between gap-3">
           <div>
             <UserPhoto className="size:12.5 md:size-20"/>
@@ -105,19 +106,25 @@ export const UserProfile_page = () => {
         </div>
       </div>
       {/* Tabs */}
-      <div className="flex-start w-200">
+      <div className="flex-start clamped-container">
       {userProfileTab_data.map((item, i) => {
         return (
           <div 
           key={i} 
           onClick={() => setActiveTab(`tab-${i}`)}
-          className={`flex-center flex-row h-11 w-39 cursor-pointer text-sm font-regular border-b ${activeTab === `tab-${i}` ? "text-primary-300 font-semibold border-primary-300 border-b-3" : " text-neutral-950 border-neutral-300"}`}>
+          className={`flex-center flex-row h-11 w-44.5 cursor-pointer text-xs md:text-sm font-regular border-b ${activeTab === `tab-${i}` ? "text-primary-300 font-semibold border-primary-300 border-b-3" : "text-neutral-950 border-neutral-300"}`}>
             <p>{ item.title }</p>
           </div>
         )
       })}
       </div>
-      <UserProfilePost />
+      {activeTab === "tab-0" ? (
+        <UserProfilePost_empty />
+      ) : activeTab === "tab-1" ?(
+        <UserProfilePost />
+      ) : (
+        <p>Hello</p>
+      )}
     </div>
   )
 }

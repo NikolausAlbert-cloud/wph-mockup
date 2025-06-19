@@ -52,11 +52,11 @@ const getSideOffset = () => {
   };
 
   return (
-    <header className="fixed z-50 top-0 w-full border-b border-neutral-300 border-0.25">
-      <div className="flex-between max-md:px-4 custom-container h-16 lg:h-20" >
-        <div className="flex-between w-37 h-9">
+    <header className="fixed z-50 top-0 w-full border-b border-neutral-300 border-0.25 bg-white">
+      <div className="flex-between max-md:px-4 custom-container h-16 md:h-20" >
+        <div className="flex-between gap-1.5 h-9">
           <Logo />
-          <p className="text-neutral-950 font-semibold text-display-xs ">Your Logo</p>
+          <p className="text-neutral-950 font-semibold text-md md:text-xl ">Your Logo</p>
         </div>
         <div className="relative hidden lg:flex lg:flex-between">
           <input 

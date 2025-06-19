@@ -235,9 +235,9 @@ body {
     margin: 0 auto;
   }
 
-  .custom-contentContainer {
-    @apply max-w-360 px-80;
+  .clamped-container {
     margin: 0 auto;
+    width: clamp(22.56rem, 55.56vw, 50rem);
   }
 }
 
