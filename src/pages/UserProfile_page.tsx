@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
-import UserPhoto from "@/assets/images/profile.svg";
+import UserPhoto from "@/assets/images/logo.svg";
 import Camera from "@/assets/images/camera.svg";
-import { useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/redux/store';
 
 import { Button } from "@/components/ui/button"
 import {
@@ -19,52 +19,52 @@ import { UserProfileDialog_data } from '@/constants/userProfileDialog_data';
 import { userProfileTab_data } from '@/constants/userProfileTab_data';
 import { UserProfilePost } from '@/components/userProfile.tsx/UserProfilePost';
 import { UserProfilePost_empty } from '@/components/userProfile.tsx/UserProfilePost_empty';
+import { UserProfilePost_changePass } from '@/components/userProfile.tsx/UserProfilePost_changePass';
+import { fetchUserData } from '@/redux/slices/getUserDataSlice';
 
 export const UserProfile_page = () => {
-  const [ name, setName ] = useState("");
-  const [ job, setJob ] = useState("");
   const [ isOpenDialog, setIsOpenDialog ] = useState(false);
   const [ activeTab, setActiveTab ] = useState("tab-0");
-  const dataUser = useSelector((state:RootState) => state.user);
-  console.log("userProfile: ", dataUser)
+  const dispatch: AppDispatch = useDispatch();
+  const { fetchUserData_status: status, data: userData, error } = useSelector((state: RootState) => state.user);
 
-  type parsedUserStorageProps = {
-    id: string;
-    name: string;
-    job: string;
-  };
+  const [dialogFormData, setDialogFormData] = useState({
+    name: "",
+    job: "",
+  });
 
   useEffect(() => {
-    let parsedUserStorage: parsedUserStorageProps | null = null;
-    if ( dataUser.userStorage && typeof dataUser.userStorage === "string" ) {
-      try {
-        parsedUserStorage = JSON.parse(dataUser.userStorage);
-      } catch (e) {
-        console.error("Error parsing userStorage from redux: ", e)
-      }
-    } else if ( dataUser.userStorage && typeof dataUser.userStorage === "object" ) {
-      parsedUserStorage = dataUser.userStorage;
+    setDialogFormData({
+      name: userData.name,
+      job: userData.job,
+    });
+  }, [userData]);
+  
+  useEffect(() => {
+    if (status === "idle") {
+      dispatch(fetchUserData());
     }
+  }, [dispatch, status]);
 
-    if (parsedUserStorage) {
-      setName(parsedUserStorage.name);
-      setJob(parsedUserStorage.job);
-    } else {
-      setName("");
-      setJob("");
-    }
-  }, [dataUser]);
+  if (status === "loading") {
+    return <p>Loading....</p>
+  }
+
+  if (status === "failed") {
+    return <p>Error in fetching user data</p>
+  }
 
   return (
     <div className="mt-20 md:mt-32 flex-center flex-col gap-4 md:gap-5">
+      <p>{error}</p>
       <div className="clamped-container h-19 md:h-28 px-4 md:px-6 py-3.5 md:py-4 flex-between border border-neutral-300 rounded-2xl">
         <div className="flex-between gap-3">
           <div>
             <UserPhoto className="size:12.5 md:size-20"/>
           </div>
           <div>
-            <p className="text-sm md:text-lg font-bold text-neutral-900">{ name }</p>
-            <p className="text-sm md:text-md font-regular text-neutral-900">{ job }</p>
+            <p className="text-sm md:text-lg font-bold text-neutral-900">{ dialogFormData.name }</p>
+            <p className="text-sm md:text-md font-regular text-neutral-900">{ dialogFormData.job }</p>
           </div>
         </div>
         <div>
@@ -92,7 +92,7 @@ export const UserProfile_page = () => {
                     return (
                       <div className="grid gap-3" key={i}>
                         <Label htmlFor={item.subtitle} className="text-sm font-semibold text-neutral-950">{item.title}</Label>
-                        <Input id={item.subtitle} name={item.subtitle} defaultValue={i === 0 ? name : job } className="text-sm font-regular text-neutral-950"/>
+                        <Input id={item.subtitle} name={item.subtitle} defaultValue={i === 0 ? dialogFormData.name : dialogFormData.job } className="text-sm font-regular text-neutral-950"/>
                       </div>
                     )
                   })}
@@ -118,13 +118,15 @@ export const UserProfile_page = () => {
         )
       })}
       </div>
-      {activeTab === "tab-0" ? (
-        <UserProfilePost_empty />
-      ) : activeTab === "tab-1" ?(
-        <UserProfilePost />
-      ) : (
-        <p>Hello</p>
-      )}
+      <div className="clamped-container">
+        {activeTab === "tab-0" ? (
+          <UserProfilePost_empty />
+        ) : activeTab === "tab-1" ? (
+          <UserProfilePost_changePass />
+        ) : (
+          <UserProfilePost />
+        )}
+      </div>
     </div>
   )
 }

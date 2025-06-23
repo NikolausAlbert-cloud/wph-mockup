@@ -1,43 +1,81 @@
-import { useTitleCase } from "@/hooks/useTitleCase";
+import { getUserData } from "@/api/getUserData";
 import { GetUserDataType } from "@/utils/validation";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export type InitialUserStateType = GetUserDataType & {
+const getUserEmail_fromStorage = (): string | null => {
+  const response = localStorage.getItem("user");
+  return response;
+};
+
+export const fetchUserData = createAsyncThunk("users/fetchUserData", async (arg, {rejectWithValue}) => {
+  try {
+    const email = getUserEmail_fromStorage();
+    
+    if (!email) {
+      return rejectWithValue("No user email found in storage.")
+    }
+    const response: GetUserDataType = await getUserData({ email });
+    
+    return response;
+  } catch (err: any) {
+    return rejectWithValue(err.response?.data?.message || err.message || "Failed to fetch user data.")
+  }
+})
+
+type DataProps = GetUserDataType & {
   job: string;
-  userStorage: any;
+}
+
+type InitialUserStateType = {
+  fetchUserData_status: "idle" | "loading" | "succeeded" | "failed";
+  data: DataProps;
+  error: string | null;
 }
 
 const initialState: InitialUserStateType = {
-  id: "",
-  name: "",
-  email: "",
-  password: "",
-  job: "",
-  userStorage: localStorage.getItem("user")
-};
-
-const TitleCase = (word: string): string => {
-  return useTitleCase(word)
+  fetchUserData_status: "idle",
+  data: {
+    id: "",
+    name: "",
+    email: "",
+    password: "",
+    job: "Frontend Developer",
+  },
+  error: null
 };
 
 const getUserDataSlice = createSlice({
   name: "getUserData",
   initialState,
   reducers: {
-    setUser: (state, action: PayloadAction<InitialUserStateType>) => {
-      state.id = action.payload.id;
-      state.name = action.payload.name;
-      state.email = action.payload.email;
-      state.password = action.payload.password;
-      state.job = action.payload.job ? action.payload.job : "Frontend Developer";
-      localStorage.setItem("user", JSON.stringify({
-        id: action.payload.id,
-        name: TitleCase(action.payload.name),
-        job: action.payload.job ? TitleCase(action.payload.job) : "Frontend Developer",
-      }));
-    }
+    clearUserData: (state) => {
+      state.data = initialState.data; // Reset user data
+      state.fetchUserData_status = "idle";
+      state.error = null;
+    },
+  },
+  extraReducers: (builder) => {
+    builder 
+      .addCase(fetchUserData.pending, (state) => {
+        state.fetchUserData_status = "loading";
+        state.error = null;
+      })
+      .addCase(fetchUserData.fulfilled, (state, action:PayloadAction<DataProps>) => {
+        state.fetchUserData_status = "succeeded";
+        state.data = {
+          id: action.payload.id,
+          name: action.payload.name,
+          email: action.payload.email,
+          password: action.payload.password,
+          job: action.payload.job ? action.payload.job : "Frontend Developer"
+        };
+      })
+      .addCase(fetchUserData.rejected, (state, action) => {
+        state.fetchUserData_status = "failed";
+        state.error = action.payload as string
+      })
   }
 });
 
-export const { setUser } = getUserDataSlice.actions;
+export const { clearUserData } = getUserDataSlice.actions;
 export default getUserDataSlice.reducer;

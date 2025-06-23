@@ -27,7 +27,7 @@ export const SignUpSchema = z.object({
         code: z.ZodIssueCode.custom,
         message: "Passwords do not match",
         path: ["confirmpassword"],
-      });
+      })
     }
   });
 
@@ -36,14 +36,28 @@ export const SignInSchema = z.object({
   password: z.string(),
 })
 
+export const ChangePasswordSchema = z.object({
+  currentpassword: z.string().min(4, { message: "Password must be at least 4 characters long" }),
+  newpassword: z.string().min(4, { message: "Password must be at least 4 characters long" }),
+  confirmpassword: z.string(),
+}).superRefine(({ newpassword, confirmpassword }, ctx) => {
+    if (newpassword !== confirmpassword) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "New password and confirm password do not match",
+        path: ["confirmpassword"],
+      })
+    }
+});
+
 export type SignInFormResponse = {
   token: string;
 }
 
 export type User = z.infer<typeof UserSchema>;
 export type SignUpFormData = z.infer<typeof SignUpSchema>;
-// export type SignUpFormData = Omit<User2, "id">;
 export type SignUpFormResponse = Omit<User, "name" | "password" | "confirmpassword">;
 export type UserStorage = Omit<User, "password" | "confirmpassword">;
 export type SignInFormData = z.infer<typeof SignInSchema>;
 export type GetUserDataType = Omit<User, "confirmpassword">;
+export type ChangePasswordData = z.infer<typeof ChangePasswordSchema>;

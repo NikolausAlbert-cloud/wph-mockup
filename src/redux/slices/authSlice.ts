@@ -6,7 +6,7 @@ type AuthState = {
 
 const getTokenFromLocalStorage = (): string | null => {
   const token = localStorage.getItem("token");
-  return token ? JSON.parse(token) : null;
+  return token;
 }
 
 const initialState: AuthState = {
@@ -19,7 +19,7 @@ const authSlice = createSlice({
   reducers: {
     loginOauth: (_, action: PayloadAction<{ id: string; email: string; token: string}>) => {
       console.log("Token received in Redux: ", action.payload.token);
-      localStorage.setItem("token", JSON.stringify(action.payload.token));
+      localStorage.setItem("token", action.payload.token);
     },
     logout: () => {
       localStorage.removeItem("token");

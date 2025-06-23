@@ -1,4 +1,3 @@
-
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormInput } from './FormInput';
@@ -6,12 +5,9 @@ import { signUpForm_data } from '@/constants/signUpForm_data';
 import { SignUpFormData, SignUpSchema } from '@/utils/validation';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { postRegister } from '@/api/register';
-import { setUser } from '@/redux/slices/authSlice';
 
 export const SignUpForm = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
@@ -30,16 +26,16 @@ export const SignUpForm = () => {
       confirmpassword: ''
     }
   });
+  
   const onSubmit: SubmitHandler<SignUpFormData> = async (data) => {
     setLoading(true);
     setError(null);
-    console.log("Form data:", data);
+  
     try {
       const response = await postRegister({
-        payload: data 
+        payload: data
       });
 
-      // dispatch(setUser(response));
       localStorage.setItem("user", JSON.stringify(response));
       navigate("/");
     

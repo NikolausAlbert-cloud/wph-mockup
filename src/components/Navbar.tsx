@@ -3,7 +3,7 @@ import { Button } from "./ui/button"
 import Logo from "../assets/images/logo.svg"
 import { Search, Menu, PencilLine, User, LogOut } from "lucide-react"
 import { useEffect, useState } from "react"
-import UserPhoto from "@/assets/images/profile.svg"
+import UserPhoto from "@/assets/images/logo.svg"
 import { Sheet, SheetClose, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "./ui/sheet"
 import {
   DropdownMenu,
@@ -23,8 +23,8 @@ export const Navbar = () => {
   const [ isToken, setIsToken ] = useState(false);
   const { width } = useWindowDimensions();
 
-  const data = useSelector((state:RootState) => state.user).name;
-  const name = useTitleCase(data);
+  const response = useSelector((state:RootState) => state.user);
+  const name = useTitleCase(response.data.name);
 
 // Define different sideOffset values based on screen width
 const getSideOffset = () => {
@@ -60,6 +60,7 @@ const getSideOffset = () => {
         </div>
         <div className="relative hidden lg:flex lg:flex-between">
           <input 
+            name="search"
             type="search" 
             placeholder="Search" 
             className="h-12 w-93.25 border border-neutral-300 rounded-xl pl-12 text-sm font-regular text-neutral-500"  

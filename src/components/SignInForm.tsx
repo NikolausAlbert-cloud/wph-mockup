@@ -6,13 +6,10 @@ import { SignInFormData, SignInSchema } from '@/utils/validation';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { postLogin } from '@/api/login';
-import { setUser } from '@/redux/slices/getUserDataSlice';
-import { getUserData } from '@/api/getUserData';
 import { useDispatch } from 'react-redux';
 
 export const SignInForm = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -30,21 +27,20 @@ export const SignInForm = () => {
   const onSubmit: SubmitHandler<SignInFormData> = async (data) => {
     setLoading(true);
     setError(null);
-
+    
     try {
       const response = await postLogin({
         payload: data
       });
 
-      localStorage.setItem("token", JSON.stringify(response.token));
+      localStorage.setItem("token", response.token);
+      localStorage.setItem("user", data.email);
       
-      const response_getUserData = await getUserData({email:data.email});
-      dispatch(setUser(response_getUserData));
       navigate("/");
 
     } catch (err) {
       console.error("Login error:", err);
-      setError(`"Error`);
+      setError("Error: An error occurred during login. Please try again.");
     } finally {
       setLoading(false);
     }
