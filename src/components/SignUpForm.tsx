@@ -36,7 +36,6 @@ export const SignUpForm = () => {
         payload: data
       });
 
-      localStorage.setItem("user", JSON.stringify(response));
       navigate("/");
     
     } catch (err) {

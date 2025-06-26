@@ -7,6 +7,7 @@ import { store } from './redux/store';
 import { Home } from './pages/Home';
 import { Navbar } from './components/Navbar';
 import { UserProfile_page } from './pages/UserProfile_page';
+import { Posts } from './pages/Posts';
 
 const App = () => {
   return (
@@ -30,6 +31,7 @@ const AppContent = () => {
         <Route path="/auth/register" element={<SignUpForm_page />} />
         <Route path="/auth/login" element={<SignInForm_page />} />
         <Route path="/userProfile" element={<UserProfile_page />} />
+        <Route path="/posts" element={<Posts />} />
         <Route path="/" element={<Home />} />
         {/* <Route path="*" element={<NotFound />} /> */}
         {/* Add more routes as needed */}

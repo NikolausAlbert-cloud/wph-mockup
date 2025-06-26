@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const UserSchema = z.object({
-  id: z.string(),
+  id: z.number(),
   name: z.string().min(2, { message: "Name is required" }),
   email: z.string().email(),
   password: z.string().min(8, { message: "Password must be at least 8 characters long" }),
@@ -61,6 +61,18 @@ export const UserProfileDialogSchema = z.object({
   .optional(),
 })
 
+export const PostsSchema = z.object({
+  title: z.string().min(1, { message: "Error Text Helper"}),
+  content: z.string().min(1, { message: "Error Text Helper"}),
+  coverimage: z
+  .any() 
+  .refine((file) => file instanceof File || typeof file === 'string' || file === null || file === undefined, {
+    message: "Error Text Helper",
+  })
+  .optional(),
+  tags: z.array(z.string()).min(1, { message: "Error Text Helper" }),
+})
+
 export type SignInFormResponse = {
   token: string;
 }
@@ -73,3 +85,4 @@ export type SignInFormData = z.infer<typeof SignInSchema>;
 export type GetUserDataType = Omit<User, "confirmpassword">;
 export type ChangePasswordData = z.infer<typeof ChangePasswordSchema>;
 export type UserProfileDialogData = z.infer<typeof UserProfileDialogSchema>;
+export type PostsData = z.infer<typeof PostsSchema>;
