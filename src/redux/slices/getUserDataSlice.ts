@@ -22,9 +22,12 @@ export const fetchUserData = createAsyncThunk("users/fetchUserData", async (arg,
   }
 })
 
-type DataProps = GetUserDataType & {
-  job: string;
-}
+type PreDataProps = GetUserDataType & {
+  headline: string;
+  avatarUrl?: string;
+};
+
+type DataProps = Omit<PreDataProps, 'password'>;
 
 type InitialUserStateType = {
   fetchUserData_status: "idle" | "loading" | "succeeded" | "failed";
@@ -38,8 +41,8 @@ const initialState: InitialUserStateType = {
     id: "",
     name: "",
     email: "",
-    password: "",
-    job: "Frontend Developer",
+    headline: "Frontend Developer",
+    avatarUrl: "",
   },
   error: null
 };
@@ -66,8 +69,8 @@ const getUserDataSlice = createSlice({
           id: action.payload.id,
           name: action.payload.name,
           email: action.payload.email,
-          password: action.payload.password,
-          job: action.payload.job ? action.payload.job : "Frontend Developer"
+          headline: action.payload.headline ? action.payload.headline : "Frontend Developer",
+          avatarUrl: action.payload.avatarUrl || "",
         };
       })
       .addCase(fetchUserData.rejected, (state, action) => {

@@ -5,5 +5,5 @@ type UserProfileDialog_dataProps = {
 
 export const UserProfileDialog_data: UserProfileDialog_dataProps[] = [
   {title: "Name", subtitle: "name"},
-  {title: "Profile Headline", subtitle: "job"},
+  {title: "Profile Headline", subtitle: "headline"},
 ];

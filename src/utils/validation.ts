@@ -41,14 +41,25 @@ export const ChangePasswordSchema = z.object({
   newpassword: z.string().min(4, { message: "Password must be at least 4 characters long" }),
   confirmpassword: z.string(),
 }).superRefine(({ newpassword, confirmpassword }, ctx) => {
-    if (newpassword !== confirmpassword) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "New password and confirm password do not match",
-        path: ["confirmpassword"],
-      })
-    }
+  if (newpassword !== confirmpassword) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "New password and confirm password do not match",
+      path: ["confirmpassword"],
+    })
+  }
 });
+
+export const UserProfileDialogSchema = z.object({
+  name: z.string().min(2, { message: "Name is required"}),
+  headline: z.string().min(2, { message: "Headline is required"}),
+  avatar: z
+  .any() // Use z.any() to allow File object initially
+  .refine((file) => file instanceof File || typeof file === 'string' || file === null || file === undefined, {
+    message: "Avatar must be an image file or a string URL",
+  })
+  .optional(),
+})
 
 export type SignInFormResponse = {
   token: string;
@@ -61,3 +72,4 @@ export type UserStorage = Omit<User, "password" | "confirmpassword">;
 export type SignInFormData = z.infer<typeof SignInSchema>;
 export type GetUserDataType = Omit<User, "confirmpassword">;
 export type ChangePasswordData = z.infer<typeof ChangePasswordSchema>;
+export type UserProfileDialogData = z.infer<typeof UserProfileDialogSchema>;

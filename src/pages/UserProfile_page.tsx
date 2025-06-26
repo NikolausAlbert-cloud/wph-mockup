@@ -12,7 +12,8 @@ import { UserProfile_dialog } from '@/components/userProfile.tsx/userProfile_dia
 
 export type DialogFormDataType = {
   name: string;
-  job: string;
+  headline: string;
+  avatar?: string | File | null;
 };
 
 export const UserProfile_page = () => {
@@ -21,15 +22,21 @@ export const UserProfile_page = () => {
   const dispatch: AppDispatch = useDispatch();
   const { fetchUserData_status: status, data: userData, error } = useSelector((state: RootState) => state.user);
 
+  const handleProfileUpdateSuccess = () => {
+    dispatch(fetchUserData());
+  };
+  
   const [dialogFormData, setDialogFormData] = useState<DialogFormDataType>({
     name: "",
-    job: "",
+    headline: "",
+    avatar: null,
   });
 
   useEffect(() => {
     setDialogFormData({
       name: userData.name,
-      job: userData.job,
+      headline: userData.headline,
+      avatar: userData.avatarUrl || null,
     });
   }, [userData]);
   
@@ -46,24 +53,29 @@ export const UserProfile_page = () => {
   if (status === "failed") {
     return <p>Error in fetching user data</p>
   }
-
+  console.log("User Data:", userData);
   return (
     <div className="mt-20 md:mt-32 flex-center flex-col gap-4 md:gap-5">
       <p>{error}</p>
       <div className="clamped-container h-19 md:h-28 px-4 md:px-6 py-3.5 md:py-4 flex-between border border-neutral-300 rounded-2xl">
         <div className="flex-between gap-3">
           <div>
-            <UserPhoto className="size:12.5 md:size-20"/>
+            {userData.avatarUrl ? (
+              <img src={userData.avatarUrl} alt="User Avatar" className="size-20 rounded-full object-cover" />
+            ) : (
+              <UserPhoto className="size:12.5 md:size-20"/>
+            )} 
           </div>
           <div>
             <p className="text-sm md:text-lg font-bold text-neutral-900">{ dialogFormData.name }</p>
-            <p className="text-sm md:text-md font-regular text-neutral-900">{ dialogFormData.job }</p>
+            <p className="text-sm md:text-md font-regular text-neutral-900">{ dialogFormData.headline }</p>
           </div>
         </div>
         <UserProfile_dialog 
           isOpenDialog={isOpenDialog}
           setIsOpenDialog={setIsOpenDialog}
-          dialogFormData={dialogFormData}
+          dialogFormData= {dialogFormData}
+          onProfileUpdated={handleProfileUpdateSuccess}
         />
       </div>
       {/* Tabs */}
@@ -71,9 +83,10 @@ export const UserProfile_page = () => {
       {userProfileTab_data.map((item, i) => {
         return (
           <div 
-          key={i} 
-          onClick={() => setActiveTab(`tab-${i}`)}
-          className={`flex-center flex-row h-11 w-44.5 cursor-pointer text-xs md:text-sm font-regular border-b ${activeTab === `tab-${i}` ? "text-primary-300 font-semibold border-primary-300 border-b-3" : "text-neutral-950 border-neutral-300"}`}>
+            key={i} 
+            onClick={() => setActiveTab(`tab-${i}`)}
+            className={`flex-center flex-row h-11 w-44.5 cursor-pointer text-xs md:text-sm font-regular border-b ${activeTab === `tab-${i}` ? "text-primary-300 font-semibold border-primary-300 border-b-3" : "text-neutral-950 border-neutral-300"}`}
+          >
             <p>{ item.title }</p>
           </div>
         )
