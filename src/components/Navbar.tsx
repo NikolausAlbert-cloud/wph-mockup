@@ -72,7 +72,7 @@ const getSideOffset = () => {
           ? (
             <div className="flex-between gap-6">
               <Link 
-                to="/post" 
+                to="/posts" 
                 className="hidden lg:flex justify-center items-center gap-0.5 text-sm font-semibold text-primary-300 underline underline-offset-3 border-r border-neutral-300 br-[1px] pr-6 h-6 cursor-pointer"
               >
                 <PencilLine />

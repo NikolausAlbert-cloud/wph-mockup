@@ -31,7 +31,7 @@ export const UserProfile_dialog = ({
   dialogFormData,
   onProfileUpdated, 
 }: UserProfileDialogProps ) => {
-  console.log("Dialog Form Data:", dialogFormData);
+  // console.log("Dialog Form Data:", dialogFormData);
   const [ loading, setLoading ] = useState(false);
   const [ error, setError ] = useState(null);
   const [ avatarPreview, setAvatarPreview ] = useState(dialogFormData.avatar || null);
@@ -95,7 +95,7 @@ export const UserProfile_dialog = ({
       const response = await changeProfile({
         payload: formData
       });
-      console.log("Response from changeProfile:", response);
+      // console.log("Response from changeProfile:", response);
       if (response.avatarUrl) { 
         setAvatarPreview(response.avatarUrl);
       }
@@ -111,7 +111,7 @@ export const UserProfile_dialog = ({
     }
   };
 
-  console.log(avatarPreview, "Avatar Preview");
+  // console.log(avatarPreview, "Avatar Preview");
   return (
     <div>
       <Dialog open={isOpenDialog} onOpenChange={setIsOpenDialog}>

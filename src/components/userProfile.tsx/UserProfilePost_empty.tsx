@@ -1,6 +1,7 @@
 import NoResult from "@/assets/images/no-result.svg";
 import { Button } from '../ui/button';
 import { PencilLine } from 'lucide-react';
+import { Link } from "react-router-dom";
 
 export const UserProfilePost_empty = () => {
   return (
@@ -14,7 +15,7 @@ export const UserProfilePost_empty = () => {
       </div>
       <Button className="w-60 md:w-50 h-11">
         <PencilLine className="size-5"/>
-        <span className="text-sm font-semibold text-neutral-25 pl-2">Write Post</span>
+        <Link to="/posts" className="text-sm font-semibold text-neutral-25 pl-2">Write Post</Link>
       </Button>
     </div>
   )

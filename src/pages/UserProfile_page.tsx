@@ -53,7 +53,7 @@ export const UserProfile_page = () => {
   if (status === "failed") {
     return <p>Error in fetching user data</p>
   }
-  console.log("User Data:", userData);
+  // console.log("User Data:", userData);
   return (
     <div className="mt-20 md:mt-32 flex-center flex-col gap-4 md:gap-5">
       <p>{error}</p>
